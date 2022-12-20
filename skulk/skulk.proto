@@ -1,0 +1,32 @@
+draw {
+	goto hand;
+}
+
+abil {
+	pay (1 Red, 1 Colorless);
+	
+}
+
+disc {
+
+}
+
+exile {
+
+}
+
+destroy {
+
+}
+
+tap {
+
+}
+
+summon {
+
+}
+
+untap {
+
+}

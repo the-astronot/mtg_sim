@@ -1,0 +1,21 @@
+draw {
+	goto hand;
+}
+
+summon {
+	goto lands;
+}
+
+abil {
+	tap;
+	inc BLUE_MANA 1;
+}
+
+disc {
+	goto graveyard;
+}
+
+exile {
+	goto exile;
+}
+
