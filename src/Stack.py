@@ -17,8 +17,8 @@ ________________
 |_File_History_|________________________________________________________________
 |_Programmer______|_Date_______|_Comments_______________________________________
 | Max Marshall    | 2022-12-18 | Created File
-|
-|
+| Max Marshall    | 2022-12-19 | Added Basic Shuffle / Prepare Mechanics
+| Max Marshall    | 2022-12-22 | Minor Mods to allow for example cards
 |
 """
 from Card import Card
@@ -26,27 +26,45 @@ import random
 
 class Stack:
 
-	def __init__(self, cards=None):
+	def __init__(self, cards=[]):
 		self.cards = cards
+
+	def __str__(self):
+		return"{}".format(self.cards)
 		
 
 class Deck(Stack):
 
-	def __init__(self):
+	def __init__(self, cards = []):
 		self.debug = False
 		self.ordered = []
-		self.cards = []
+		self.cards = cards
 		self.nonlands = []
 		self.lands = []
-		for _ in range(24): # This is just for a test of the shuffling system
-			self.lands.append("L")
-		for _ in range(36):
-			self.nonlands.append("NL")
-		self.cards = self.lands + self.nonlands
-		
+
+	def draw(self):
+		return self.ordered.pop(0)
+	
+	def scry(self):
+		card = self.ordered.pop(0)
+		#move = offer_player("scry",card)
+		move = 0
+		if move:
+			self.ordered.append(card)
+		else:
+			self.ordered.insert(0,card)
+	
+	def separate_types(self):
+		for card in self.cards:
+			if card.types["L"]:
+				self.lands.append(card)
+			else:
+				self.nonlands.append(card)
+
 	def prepare(self):
 		# Mana-Sets the Deck as best it can
 		self.ordered = []
+		self.separate_types()
 		ratio = len(self.nonlands)/float(len(self.lands))
 		lands = self.lands.copy()
 		nonlands = self.nonlands.copy()
@@ -71,7 +89,7 @@ class Deck(Stack):
 	def shuffle(self):
 		# Performs a faux-Magic Shuffle
 		temp = self.ordered.copy()
-		block_size = int(len(temp)/6.0)
+		block_size = int(len(temp)/float(random.randint(6,10)))
 		self.ordered = []
 		self.ordered = temp[:block_size]
 		temp = temp[block_size:]
@@ -90,11 +108,11 @@ class Deck(Stack):
 	def print(self, string):
 		# Handy debugging
 		if self.debug:
-			print(string)
+			print("{}".format(string))
 
 	def size(self):
 		# Total size of the deck
-		return len(self.ordered)
+		return len(self.cards)
 
 
 

@@ -17,7 +17,7 @@ ________________
 |_File_History_|________________________________________________________________
 |_Programmer______|_Date_______|_Comments_______________________________________
 | Max Marshall    | 2022-12-18 | Created File
-|
+| Max Marshall    | 2022-12-21 | Modified to match changes to Counters Class
 |
 |
 """
@@ -26,30 +26,49 @@ from Counters import Player_Counters
 
 class Player:
 
-	def __init__(self, name):
+	def __init__(self, name, cards=[]):
 		self.name = name
-		self.hand = []
+		self.hand = Stack()
+		self.mat = Stack()
 		self.counters = Player_Counters()
-		self.deck = Deck()
+		self.deck = Deck(cards)
 		self.graveyard = Stack()
 		self.exile = Stack()
+		self.locations = {"hand":self.hand,"mat":self.mat,"deck":self.deck,"graveyard":self.graveyard,"exile":self.exile}
+		self.debug = False
+
+	def print(self, string):
+		if self.debug:
+			print("{}".format(string))
+
+	def draw_card(self):
+		self.hand.cards.append(self.deck.draw())
 
 	def getHealth(self):
-		return self.counters.get("health")
+		return self.get("health")
+
+	def setHealth(self, value):
+		self.sett("health",value)
+
+	def get(self,name):
+		v, minim, maxim = self.counters.get(name)
+		return v
+
+	def sett(self,name,value):
+		return self.counters.sett(name,value)
 
 	def __repr__(self):
-		return "{}:{:02d}".format(self.name,self.health)
+		return "{}:{:02d}".format(self.name,self.getHealth())
 
 	def __str__(self):
-		return "{}:{:02d}".format(self.name,self.health)
-
-	def set_health(self, value):
-		self.counters.set_counter("health",value)
+		return "{}:{:02d}".format(self.name,self.getHealth())
 
 	def setup(self):
 		self.deck.prepare()
 		for _ in range(5):
 			self.deck.shuffle()
+		for _ in range(7):
+			self.draw_card()
 
 
 class Human(Player):

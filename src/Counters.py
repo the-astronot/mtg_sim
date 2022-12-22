@@ -17,7 +17,7 @@ ________________
 |_File_History_|________________________________________________________________
 |_Programmer______|_Date_______|_Comments_______________________________________
 | Max Marshall    | 2022-12-19 | Created File
-|
+| Max Marshall    | 2022-12-21 | Modified Counters class to function better
 |
 |
 """
@@ -67,7 +67,7 @@ class MultiCounter:
 
 	def get(self, name):
 		if name in self.counters:
-			c = self.counter[name]
+			c = self.counters[name]
 			return c.value, c.min, c.max
 		else:
 			return None,None,None

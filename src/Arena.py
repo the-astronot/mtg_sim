@@ -17,20 +17,21 @@ ________________
 |_File_History_|________________________________________________________________
 |_Programmer______|_Date_______|_Comments_______________________________________
 | Max Marshall    | 2022-12-18 | Created File
-|
+| Max Marshall    | 2022-12-22 | Basic Interpreter Integration
 |
 |
 """
 from utils import yes
 from Player import Player
-from Card import Card
+from Card import Card, ExampleCard, ExampleLand
+from SkulkInterpreter import SkulkInterpreter
 import random
 
 
 class Arena:
 	def __init__(self, players):
 		self.players = players
-		#self.interpreter = Skulk()
+		self.interpreter = SkulkInterpreter(self)
 		self.ready = False
 		self.debug = True
 
@@ -38,9 +39,17 @@ class Arena:
 		if self.debug:
 			print(string)
 
+	def get_known_cards(self):
+		cards = []
+		for player in self.players:
+			for loc in ["hand","mat","graveyard","exile"]:
+				for card in player.locations[loc].cards:
+					cards.append(card)
+		return cards
+
 	def pre_game(self, health=20, min_deck=60):
 		for player in self.players:
-			player.set_health(health)
+			player.setHealth(health)
 			if player.deck.size() < min_deck:
 				print("Error: {} playing with too small a deck.".format(player.name))
 				cont = input("Continue? (Y/n): ")
@@ -153,9 +162,12 @@ class Arena:
 
 
 if __name__ == '__main__':
-	p1 = Player("Max")
+	cards = [ExampleCard() for _ in range(36)] + [ExampleLand() for _ in range(24)]
+	p1 = Player("Max",cards)
 	p2 = Player("Garrett")
 	p3 = Player("Emilie")
 	p4 = Player("Austin")
-	test = Arena([p1,p2,p3,p4])
-	test.pre_game()
+	arena = Arena([p1])
+	#print(p1.deck)
+	arena.pre_game()
+	print(p1.hand)

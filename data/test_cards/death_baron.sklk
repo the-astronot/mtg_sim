@@ -1,0 +1,22 @@
+Name	Death_Baron
+Power	2
+Toughness	2
+Cost	0	0	0	0	2	1
+Text	
+FText	
+##########
+untap {
+	isAlive;
+	isTapped;
+	untap_card;
+};
+cast {
+	pay;
+	goto my mat;
+};
+begin_round {
+	isAlive;
+	= $max_health max self.toughness
+	= toughness max_heath
+}
+
