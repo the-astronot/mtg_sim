@@ -30,10 +30,12 @@ class Player:
 		self.name = name
 		self.hand = []
 		self.counters = Player_Counters()
-		self.health = self.counters.counters["health"].value
 		self.deck = Deck()
 		self.graveyard = Stack()
 		self.exile = Stack()
+
+	def getHealth(self):
+		return self.counters.get("health")
 
 	def __repr__(self):
 		return "{}:{:02d}".format(self.name,self.health)

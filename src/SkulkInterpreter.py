@@ -22,7 +22,6 @@ ________________
 |
 """
 
-#import
 
 class SkulkInterpreter:
 	def __init__(self, arena):

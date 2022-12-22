@@ -26,6 +26,8 @@ ________________
 class Card:
 
 	def __init__(self, data):
+		self.name = None
+		self.counters = {}
 		self.types = []
 		self.colors = []
 		self.cost = {}
