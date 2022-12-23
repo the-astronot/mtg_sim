@@ -12,6 +12,10 @@ Getting a simulator up and running.
 
 Nothing yet!
 
-## Author(s): Max Marshall
+## Author(s):
 
-## Contact: maxtmarshall99@gmail.com
+Max Marshall
+
+## Contact:
+
+maxtmarshall99@gmail.com
