@@ -1,0 +1,80 @@
+untap {
+	isAlive;
+	isTapped;
+	untap_card;
+}
+
+first_strike {
+	# First Strike does not come standard
+}
+
+attack {
+	# If creature, deal damage to target
+	isCreature;
+	damage target power;
+}
+
+tap {
+	tap_card;
+}
+
+cast {
+	# X = Cost to cast
+	pay X;
+	goto MAT;
+}
+
+iscast {
+	# pass
+}
+
+destroy {
+	isAlive;
+	goto GRAVEYARD;
+}
+
+is_destroyed {
+	# pass
+}
+
+exile {
+	isAlive;
+	goto EXILE;
+}
+
+is_exiled {
+	# pass
+}
+
+return {
+	isAlive;
+	goto HAND;
+}
+
+is_returned {
+	# pass
+}
+
+equip {
+	isAlive;
+	isCreature;
+	equip_card;
+}
+
+is_equipped {
+	# pass
+}
+
+choose {
+	print X;
+	input player;
+}
+
+draw {
+	> 0 DECK_SIZE;
+	draw_card;
+}
+
+is_drawn {
+	# pass
+}

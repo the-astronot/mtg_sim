@@ -16,12 +16,13 @@
 ________________
 |_File_History_|________________________________________________________________
 |_Programmer______|_Date_______|_Comments_______________________________________
-| Max Marshall    | 2022-12-18 | Created File
+| Max Marshall    | 2022-12-22 | Created File
 |
 |
 |
 """
-from Arena import Arena
+
+#import
 
 
 

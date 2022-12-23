@@ -16,7 +16,6 @@ cast {
 };
 begin_round {
 	isAlive;
-	= $max_health max self.toughness
-	= toughness max_heath
+	regainHealth;
 }
 

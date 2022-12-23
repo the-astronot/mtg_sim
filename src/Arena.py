@@ -159,11 +159,9 @@ class Arena:
 			self.winner = self.players
 
 
-
-
 if __name__ == '__main__':
 	cards = [ExampleCard() for _ in range(36)] + [ExampleLand() for _ in range(24)]
-	p1 = Player("Max",cards)
+	p1 = Player("Max",cards,"../data/player.sklk")
 	p2 = Player("Garrett")
 	p3 = Player("Emilie")
 	p4 = Player("Austin")

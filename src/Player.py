@@ -23,10 +23,12 @@ ________________
 """
 from Stack import Stack, Deck
 from Counters import Player_Counters
+from Card import Card, ExampleCard, ExampleLand
+from utils import process_skulk
 
 class Player:
 
-	def __init__(self, name, cards=[]):
+	def __init__(self, name, cards=[], skulk_file=None):
 		self.name = name
 		self.hand = Stack()
 		self.mat = Stack()
@@ -35,11 +37,21 @@ class Player:
 		self.graveyard = Stack()
 		self.exile = Stack()
 		self.locations = {"hand":self.hand,"mat":self.mat,"deck":self.deck,"graveyard":self.graveyard,"exile":self.exile}
+		self.skulk = {}
+		self.skulk_intercepts = {}
+		if skulk_file is not None:
+			self.read_skulk(skulk_file)
 		self.debug = False
 
 	def print(self, string):
 		if self.debug:
 			print("{}".format(string))
+
+	def read_skulk(self, filename):
+		with open(filename,"r") as f:
+			text = f.read()
+			self.skulk = process_skulk(text)
+
 
 	def draw_card(self):
 		self.hand.cards.append(self.deck.draw())
@@ -78,4 +90,6 @@ class Human(Player):
 
 
 if __name__ == '__main__':
-	test = Player("Max")
+	cards = [ExampleLand() for _ in range(24)] + [ExampleCard() for _ in range(36)]
+	test = Player("Max",cards,"../data/player.sklk")
+	print(test.skulk)

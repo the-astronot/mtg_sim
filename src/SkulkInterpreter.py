@@ -23,6 +23,7 @@ ________________
 |
 """
 from Card import Card, ExampleCard
+from utils import pay_optimization
 
 
 class SkulkInterpreter:
@@ -172,6 +173,29 @@ class SkulkInterpreter:
 	# Actual commands
 	def create(self, card=None, player=None):
 		print("Hello_World!")
+
+	def echo(self, card=None, player=None, string=None):
+		print("{}".format(string))
+		
+	def goto(self,card,player,args):
+		target = args[0]
+		# assert target in locations
+		current_loc = card.location
+		current_loc.cards.remove(card)
+		card.location = target
+		target.cards.append(card)
+
+	def isAlive(self,card,player):
+		if card.get("in_play") == True:
+			return True
+		return False
+
+	def pay(self, card, player):
+		lands = []
+		for land in player.mat.cards:
+			if land.types["L"]:
+				lands.append(land)
+		return pay_optimization(lands,card)
 
 	def replace(self,card,comm,new_comm,new_skulk=None):
 		if new_skulk:

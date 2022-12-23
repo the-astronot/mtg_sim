@@ -18,7 +18,7 @@ ________________
 |_Programmer______|_Date_______|_Comments_______________________________________
 | Max Marshall    | 2022-12-18 | Created File
 | Max Marshall    | 2022-12-21 | Fleshed out Basic Card Properties
-| Max Marshall    | 2022-12-22 | Added more support towards Skulk, example Land
+| Max Marshall    | 2022-12-22 | Added more support towards Skulk, example
 |
 """
 from Counters import MultiCounter
@@ -33,7 +33,7 @@ class Card:
 		self.types = {"L":False,"C":False,"I":False,"S":False,"A":False,"P":False,"E":False,"T":False}
 		self.subtypes = []
 		self.permanent = False
-		self.colors = {"G":0,"R":0,"B":0,"W":0,"K":0,"C":0}
+		self.colors = {"G":True,"R":True,"B":True,"W":True,"K":True,"C":True}
 		self.cost = {"G":0,"R":0,"B":0,"W":0,"K":0,"C":0}
 		self.rarity = {"L":False,"C":False,"U":False,"R":False,"M":False}
 		self.converted_cost = None
@@ -43,6 +43,7 @@ class Card:
 		self.text = ""
 		self.ftext = ""
 		self.relations = {} # Name -> Card
+		self.in_play = False
 		self.set = None
 		self.hash = None
 		self.unpack_data(data)
@@ -81,13 +82,16 @@ class Land(Card):
 		super().__init__(Data)
 		self.types["L"] = True
 		self.permanent = True
+		self.mana = {"G":0,"R":0,"B":0,"W":0,"K":0,"C":0}
+		self.spent = {"G":0,"R":0,"B":0,"W":0,"K":0,"C":0}
 
 
 class ExampleCard(Creature):
 	def __init__(self):
 		super().__init__()
 		self.name = "Death Baron"
-		self.types["Creature"] = True
+		self.types["C"] = True
+		self.cost = {"G":0,"R":0,"B":0,"W":0,"K":2,"C":1}
 		self.subtypes = ["Zombie","Wizard"]
 		self.converted_cost = 3
 		self.counters.sett("Power",2)
@@ -104,6 +108,9 @@ class ExampleLand(Land):
 		super().__init__()
 		self.subtypes = ["Basic Land"]
 		self.name = "Swamp"
+		self.colors["K"] = True
+		self.mana["K"] = 1
+		self.mana["C"] = 1
 		self.conv_cost = 0
 		self.text=""
 		self.ftext="But the fourth... The fourth stayed up! And that's what you're gettin' lad, the strongest castle in these Isles."
