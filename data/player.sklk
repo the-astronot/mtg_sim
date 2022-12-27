@@ -78,3 +78,15 @@ draw {
 is_drawn {
 	# pass
 }
+
+begin_round {
+	untap_card;
+}
+
+end_round {
+	# pass
+}
+
+update {
+	# pass
+}

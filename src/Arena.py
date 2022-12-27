@@ -85,7 +85,7 @@ class Arena:
 			return
 		self.round = 1
 		while self.winner is None:
-			self.print("Beginning Round {:02d}".format(self.round))
+			self.print("BEGINNING ROUND {:02d}".format(self.round))
 			for player in self.ordered:
 				self.play_turn(player)
 				self.check_winner()
@@ -101,7 +101,7 @@ class Arena:
 		# Draw Card
 		self.interpreter.broadcast("update")
 		self.interpreter.singlecast("draw",player.skulk)
-		self.interpreter.broadcast("is_drawing")
+		self.interpreter.broadcast("is_drawn")
 		# MAIN PHASE 1
 		self.interpreter.broadcast("update")
 		self.main_phase(player)
@@ -115,7 +115,7 @@ class Arena:
 		self.interpreter.broadcast("update")
 		self.interpreter.broadcast("round_end")
 		self.interpreter.broadcast("update")
-		pass
+		return
 
 	def main_phase(self, player):
 		action = 0
@@ -169,3 +169,4 @@ if __name__ == '__main__':
 	#print(p1.deck)
 	arena.pre_game()
 	print(p1.hand)
+	arena.play_game()

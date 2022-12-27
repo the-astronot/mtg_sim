@@ -1,0 +1,24 @@
+try_execute(card,player,env=None)
+	if env is None:
+		env = {}
+	execute(env)
+
+execute(cmnds,card,player,env=None)
+	for line in cmds:
+		succ, env = self.commands[line[0]](card,player,env,line[1:])
+
+
+add_loc_to_env(name,env):
+	if env is None:
+		return None
+	if name in env:
+		return env
+	env[name] = None
+	return env
+
+	
+
+
+env = {card: {var_name: value,
+							var_name2: value2}
+			}

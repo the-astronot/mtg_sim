@@ -14,7 +14,7 @@ Nothing yet!
 
 ## Author(s):
 
-Max Marshall
+- Max Marshall
 
 ## Contact:
 
