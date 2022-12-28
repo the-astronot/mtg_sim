@@ -71,7 +71,6 @@ choose {
 }
 
 draw {
-	> 0 DECK_SIZE;
 	draw_card;
 }
 

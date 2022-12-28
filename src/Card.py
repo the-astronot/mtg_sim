@@ -36,10 +36,10 @@ class Card:
 		self.colors = {"G":True,"R":True,"B":True,"W":True,"K":True,"C":True}
 		self.cost = {"G":0,"R":0,"B":0,"W":0,"K":0,"C":0}
 		self.rarity = {"L":False,"C":False,"U":False,"R":False,"M":False}
-		self.converted_cost = None
+		self.conv_cost = None
 		self.image = None
 		self.skulk = {} # Event -> Code
-		self.skulk_intercepts = {}
+		self.interrupts = {}
 		self.text = ""
 		self.ftext = ""
 		self.relations = {} # Name -> Card
@@ -48,12 +48,14 @@ class Card:
 		self.hash = None
 		self.unpack_data(data)
 		self.location = None
+		self.owner = None
+		self.env = {}
 
 	def __repr__(self):
 		return self.name
 
 	def __str__(self):
-		return "{}:{}:{}".format(self.name,self.type_short,self.conv_cost)
+		return "{}->{}".format(self.name,self.conv_cost)
 
 	def unpack_data(self, data=None):
 		if data is None:
@@ -63,6 +65,9 @@ class Card:
 
 	def set_location(self, location):
 		self.location = location
+
+	def getPlayable(self):
+		return []
 
 
 class Creature(Card):
@@ -93,7 +98,7 @@ class ExampleCard(Creature):
 		self.types["C"] = True
 		self.cost = {"G":0,"R":0,"B":0,"W":0,"K":2,"C":1}
 		self.subtypes = ["Zombie","Wizard"]
-		self.converted_cost = 3
+		self.conv_cost = 3
 		self.counters.sett("Power",2)
 		self.counters.sett("Toughness",2)
 		self.rarity["R"] = True

@@ -24,7 +24,7 @@ ________________
 from utils import yes
 from Player import Player
 from Card import Card, ExampleCard, ExampleLand
-from SkulkInterpreter import SkulkInterpreter
+from SkulkInterpreter import SkulkInterpreter, CMND_STRUCT
 import random
 
 
@@ -39,12 +39,19 @@ class Arena:
 		if self.debug:
 			print(string)
 
-	def get_known_cards(self):
+	def get_active_cards(self,target_player):
 		cards = []
-		for player in self.players:
-			for loc in ["hand","mat","graveyard","exile"]:
-				for card in player.locations[loc].cards:
-					cards.append(card)
+		locations = ["hand","mat","graveyard","exile"]
+		if target_player is not None:
+			for loc in locations:
+					for card in target_player.locations[loc].cards:
+						cards.append(card)
+		else:
+			for player in self.players:
+				for loc in locations:
+					for card in player.locations[loc].cards:
+						cards.append(card)
+		self.print("NUM_CARDS: {}".format(len(cards)))
 		return cards
 
 	def pre_game(self, health=20, min_deck=60):
@@ -94,42 +101,42 @@ class Arena:
 			self.round += 1
 
 	def play_turn(self, player):
-		self.interpreter.broadcast("update")
-		self.interpreter.broadcast("round_begin")
+		self.interpreter.add_call(CMND_STRUCT("update",None,None))
+		self.interpreter.add_call(CMND_STRUCT("round_begin",None,player))
 		# Begin untap step
-		self.interpreter.broadcast("untap")
+		self.interpreter.add_call(CMND_STRUCT("untap",None,player))
 		# Draw Card
-		self.interpreter.broadcast("update")
-		self.interpreter.singlecast("draw",player.skulk)
-		self.interpreter.broadcast("is_drawn")
+		self.interpreter.add_call(CMND_STRUCT("update",None,None))
+		self.interpreter.add_call(CMND_STRUCT("draw",player,player))
 		# MAIN PHASE 1
-		self.interpreter.broadcast("update")
+		self.interpreter.add_call(CMND_STRUCT("update",None,None))
 		self.main_phase(player)
 		# COMBAT PHASE
-		self.interpreter.broadcast("update")
+		self.interpreter.add_call(CMND_STRUCT("update",None,None))
 		self.combat_phase(player)
 		# MAIN PHASE 2
-		self.interpreter.broadcast("update")
+		self.interpreter.add_call(CMND_STRUCT("update",None,None))
 		self.main_phase(player)
 		# END PHASE
-		self.interpreter.broadcast("update")
-		self.interpreter.broadcast("round_end")
-		self.interpreter.broadcast("update")
+		self.interpreter.add_call(CMND_STRUCT("update",None,None))
+		self.interpreter.add_call(CMND_STRUCT("round_end",None,player))
+		self.interpreter.add_call(CMND_STRUCT("update",None,None))
 		return
 
 	def main_phase(self, player):
+		self.print("ENTERING MAIN PHASE")
 		action = 0
 		while action is not None:
 			targets = [player.hand,player.mat,player.graveyard]
 			possible_actions = []
 			for target in targets:
 				for card in target.cards:
-					add, action = card.isPlayable()
-					if add:
-						possible_actions.append(card, action)
-			action = player.choice(possible_actions)
-			if action is not None:
-				self.interpreter.call(action)
+					actions = card.getPlayable()
+					for action in actions:
+						possible_actions.append(CMND_STRUCT(action,card,player))
+				cmnd = player.choice(possible_actions)
+			if cmnd is not None:
+				self.interpreter.add_call(cmnd)
 		
 	def combat_phase(self, player):
 		potential_attackers = []
@@ -169,4 +176,5 @@ if __name__ == '__main__':
 	#print(p1.deck)
 	arena.pre_game()
 	print(p1.hand)
+	print(arena.players)
 	arena.play_game()

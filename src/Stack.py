@@ -26,8 +26,10 @@ import random
 
 class Stack:
 
-	def __init__(self, cards=[]):
+	def __init__(self, cards=None):
 		self.cards = cards
+		if cards is None:
+			self.cards = []
 
 	def __str__(self):
 		return"{}".format(self.cards)

@@ -38,7 +38,7 @@ class Player:
 		self.exile = Stack()
 		self.locations = {"hand":self.hand,"mat":self.mat,"deck":self.deck,"graveyard":self.graveyard,"exile":self.exile}
 		self.skulk = {}
-		self.skulk_intercepts = {}
+		self.interrupts = {}
 		if skulk_file is not None:
 			self.read_skulk(skulk_file)
 		self.debug = False
@@ -51,7 +51,6 @@ class Player:
 		with open(filename,"r") as f:
 			text = f.read()
 			self.skulk = process_skulk(text)
-
 
 	def draw_card(self):
 		self.hand.cards.append(self.deck.draw())
@@ -77,6 +76,8 @@ class Player:
 
 	def setup(self):
 		self.deck.prepare()
+		for card in self.deck.cards:
+			card.owner = self
 		for _ in range(5):
 			self.deck.shuffle()
 		for _ in range(7):
